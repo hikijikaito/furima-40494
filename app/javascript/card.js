@@ -26,7 +26,6 @@ const pay = () => {
     });
     e.preventDefault();
   });
-  console.log(publicKey);
 };
 
 window.addEventListener("turbo:load", pay);
