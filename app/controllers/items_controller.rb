@@ -13,7 +13,8 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-    if @item.save
+    if @item.valid?
+      @item.save
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
@@ -24,6 +25,11 @@ class ItemsController < ApplicationController
   end
 
   def edit
+    if @item.order.present?
+      redirect_to root_path, alert: 'この商品は売却済みです。'
+    elsif current_user != @item.user
+      redirect_to root_path, alert: '他のユーザーの商品は編集できません。'
+    end
   end
 
   def update
