@@ -1,4 +1,3 @@
-# app/controllers/orders_controller.rb
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: :index
   before_action :set_item, only: [:index, :create]
@@ -18,9 +17,7 @@ class OrdersController < ApplicationController
       pay_item
       if @item_order.save
         redirect_to root_path
-      else
-        flash[:alert] = 'Failed to save order'
-        redirect_to root_path
+        nil
       end
     else
       gon.public_key = ENV['PAYJP_PUBLIC_KEY']
