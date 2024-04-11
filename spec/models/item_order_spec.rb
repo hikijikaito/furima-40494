@@ -4,12 +4,16 @@ RSpec.describe ItemOrder, type: :model do
   describe '購入者情報の保存' do
     context '正常系' do
       it '全ての項目が入力されていれば購入ができる' do
-        item_order = FactoryBot.build(:item_order)
+        user = FactoryBot.create(:user)
+        item = FactoryBot.create(:item)
+        item_order = FactoryBot.build(:item_order, user:, item:)
         expect(item_order).to be_valid
       end
 
       it '建物名が空でも購入できる' do
-        item_order = FactoryBot.build(:item_order, building_name: '')
+        user = FactoryBot.create(:user)
+        item = FactoryBot.create(:item)
+        item_order = FactoryBot.build(:item_order, user:, item:, building_name: '')
         expect(item_order).to be_valid
       end
     end
@@ -61,12 +65,14 @@ RSpec.describe ItemOrder, type: :model do
       end
 
       it '電話番号が11桁でなければ購入できない' do
-        item_order = FactoryBot.build(:item_order, phone_number: '123456789012')
+        item_order = FactoryBot.build(:item_order, phone_number: '12345678901')
         expect(item_order).to_not be_valid
       end
 
       it '電話番号が11桁であれば購入できる' do
-        item_order = FactoryBot.build(:item_order, phone_number: '12345678901')
+        user = FactoryBot.create(:user)
+        item = FactoryBot.create(:item, user: user) # userを指定してitemを作成する
+        item_order = FactoryBot.build(:item_order, user: user, item: item, phone_number: '12345678901')
         expect(item_order).to be_valid
       end
 
